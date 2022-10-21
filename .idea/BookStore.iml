@@ -8,5 +8,9 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="filepond" level="application" />
+    <orderEntry type="library" name="filepond-plugin-image-preview" level="application" />
+    <orderEntry type="library" name="filepond-plugin-image-resize" level="application" />
+    <orderEntry type="library" name="filepond-plugin-file-encode" level="application" />
   </component>
 </module>
