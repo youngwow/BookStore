@@ -95,7 +95,7 @@ router.delete('/:id', async (req, res)  => {
         await author.remove();
         res.redirect('/authors');
     } catch  {
-        if (author ==  null){
+        if (author == null){
             res.redirect('/');
         } else{
             // console.log(`Author_id: ${author.id}`)
