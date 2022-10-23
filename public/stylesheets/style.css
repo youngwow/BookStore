@@ -1,9 +1,10 @@
-@import "shared/fonts.css";
 @import 'shared/variables.css';
+@import 'shared/fonts.css';
 @import 'shared/header.css';
 @import 'shared/buttons.css';
+@import 'shared/form.css';
 
-:root{
+:root {
   font-family: 'Gotham Rounded', sans-serif;
   font-size: 20px;
   color: var(--color-text-light);
