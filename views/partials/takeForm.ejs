@@ -1,0 +1,7 @@
+<form method="POST" action="<%= url %>?_method=PUT">
+    <% if (isTaken) {%>
+        <button class="btn btn-primary book-details-take-button" type="submit">Take</button>
+    <% } else {%>
+            <button class="btn btn-danger book-details-take-button" type="submit">Return</button>
+        <% } %>
+</form>

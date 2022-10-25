@@ -17,6 +17,9 @@
         </div>
     </div>
     <div class="form-row form-row-end">
+        <label>All:<input type="radio" name="all_books" checked="checked" value="<%= searchOptions.all_books ? 'all' : 'unchecked'%>"></label>
+        <label>Only available<input type="radio" name="all_books" value="<%= searchOptions.all_books ? 'only' : 'unchecked'%>"></label>
+        <label>Soon<input type="radio" name="all_books" value="<%= searchOptions.all_books ? 'soon' : 'unchecked'%>"></label>
         <button class="btn btn-primary" type="submit">Search</button>
     </div>
 </form>

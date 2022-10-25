@@ -6,6 +6,7 @@
             <a class="btn btn-primary" href="/books/<%= book.id %>/edit">Edit</a>
             <%- include('../partials/deleteForm', { url: `/books/${book.id}` }) %>
             <a class="btn btn-primary book-details-author-button" href="/authors/<%= book.author.id %>">View Author</a>
+            <%- include('../partials/takeForm', { url: `/books/take/${book.id}`, isTaken: book.isTaken }) %>
         </div>
     </div>
     <div class="book-details-grid">
@@ -15,6 +16,12 @@
         <div><%= book.publishDate.toDateString() %></div>
         <div class="book-details-label">Page Count:</div>
         <div><%= book.pageCount %></div>
+        <div class="book-details-label">Available:</div>
+        <% if (book.isTaken) {%>
+            <div> Yes </div>
+        <% } else {%>
+            <div> No </div>
+        <% } %>
         <div class="book-details-label">Description:</div>
         <div><%= book.description  %></div>
     </div>

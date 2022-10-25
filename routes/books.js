@@ -18,6 +18,14 @@ router.get('/', async (req, res) => {
     if (req.query.publishedAfter != null && req.query.publishedAfter !== ''){
         query = query.gte('publishDate', req.query.publishedAfter);
     }
+    switch (req.query.all_books) {
+        case "only":
+            query = query.find({isTaken: {$eq: true}})
+            break;
+        case "soon":
+            query = query.find({isTaken: {$eq: false}})
+            break;
+    }
     try {
         const books = await query.exec();
         res.render('books/index', {
@@ -95,6 +103,17 @@ router.put('/:id', async (req, res) => {
         } else{
             res.redirect('/');
         }
+    }
+});
+// Take Book
+router.put('/take/:id', async (req, res) => {
+    try {
+        let book = await Book.findById(req.params.id);
+        book.isTaken = !book.isTaken;
+        await book.save();
+        res.redirect(`/books/${book.id}`);
+    } catch {
+        res.redirect('/');
     }
 });
 
