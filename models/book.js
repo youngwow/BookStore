@@ -40,6 +40,11 @@ const bookSchema = new mongoose.Schema({
         type: Boolean,
         required: true,
         default: true
+    },
+    takenByUser: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: false,
+        ref: 'User'
     }
 });
 

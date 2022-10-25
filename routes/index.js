@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Book = require('../models/book')
+const passport = require("passport");
 
 /* GET home page. */
 router.get('/', async function(req, res, next) {
@@ -12,5 +13,14 @@ router.get('/', async function(req, res, next) {
   }
   res.render('index', { books: books});
 });
+
+router.get('/fail', function (req, res) {
+  res.end('fail');
+})
+
+router.get('/oauth2/redirect/google', passport.authenticate('google', {
+  successRedirect: '/',
+  failureRedirect: '/fail'
+}));
 
 module.exports = router;

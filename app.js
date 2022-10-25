@@ -11,10 +11,10 @@ const expressLayouts = require('express-ejs-layouts');
 const methodOverride = require('method-override');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const session = require("express-session");
+const passport = require("passport");
 
-mongoose.connect(process.env.DATABASE_URL, {
-  useNewUrlParser: true
-});
+mongoose.connect(process.env.DATABASE_URL);
 
 const db = mongoose.connection;
 
@@ -26,6 +26,8 @@ const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const authorRouter = require('./routes/authors');
 const bookRouter = require('./routes/books');
+const authRouter = require('./routes/auth');
+
 
 const app = express();
 
@@ -36,8 +38,17 @@ app.set('layout', 'layouts/layout');
 
 app.use(expressLayouts);
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(bodyParser.urlencoded({ limit: '10mb', extended: false}));
+app.use(bodyParser.urlencoded({ limit: '10mb', extended: true}));
 app.use(methodOverride('_method'));
+app.use(
+    session({
+        secret: "secr3t",
+        resave: false,
+        saveUninitialized: true, // false
+    })
+);
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -48,6 +59,7 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/authors', authorRouter);
 app.use('/books', bookRouter);
+app.use('/auth', authRouter);
 
 // catch 404 and forward to error handler
 // app.use(function(req, res, next) {
