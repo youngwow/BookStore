@@ -33,7 +33,7 @@ passport.use(new GoogleStrategy({
     const firstName = profile.name.givenName;
     const lastName = profile.name.familyName;
     //const profilePhoto = profile.photos[0].value;
-    const source = "google";
+    //const source = "google";
 
     const currentUser = await UserService.getUserByEmail({ email });
     if (!currentUser) {

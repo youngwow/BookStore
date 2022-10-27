@@ -39,12 +39,16 @@ const bookSchema = new mongoose.Schema({
     isTaken: {
         type: Boolean,
         required: true,
-        default: true
+        default: true  // TODO: fix to false and then fix other things due to that
     },
     takenByUser: {
         type: mongoose.Schema.Types.ObjectId,
         required: false,
         ref: 'User'
+    },
+    dateReturn: {
+        type: Date,
+        required: false
     }
 });
 

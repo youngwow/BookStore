@@ -3,6 +3,7 @@ const express = require('express');
 const router = express.Router();
 const Book = require('../models/book');
 const Author = require('../models/author');
+const User = require('../models/user');
 const imageMimeTypes = ['image/jpeg', 'image/png', 'images/gif'];
 
 
@@ -64,9 +65,29 @@ router.post('/', async (req, res) => {
 // Show Book
 router.get('/:id', async (req, res) => {
     let book;
+    let bookTakenByUser;
+    let user;
+    let isAdmin;
+    let dateReturn;
     try {
         book = await Book.findById(req.params.id).populate('author').exec();
-        res.render('books/show', {book: book});
+        if (!book.isTaken){
+            bookTakenByUser = await User.findById(book.takenByUser);
+            dateReturn = book.dateReturn;
+        }
+        if (req.user != null){
+            user = await User.findById(req.user._id);
+            isAdmin = user.isAdmin;
+        } else{
+            isAdmin = false;
+        }
+        res.render('books/show',
+            {
+                book: book,
+                user: bookTakenByUser,
+                isAdmin: isAdmin,
+                dateReturn: dateReturn
+            });
     } catch (error) {
         console.error(error);
         res.redirect('/');
@@ -107,21 +128,57 @@ router.put('/:id', async (req, res) => {
 });
 // Take Book
 router.put('/take/:id', async (req, res) => {
+    let user;
     try {
         let book = await Book.findById(req.params.id);
-        book.isTaken = !book.isTaken;
-        await book.save();
+        if (req.user != null){
+            user = await User.findById(req.user._id);
+            book.isTaken = false;
+            book.takenByUser = user._id;
+            book.dateReturn = new Date();
+            book.dateReturn.setMonth(book.dateReturn.getMonth() + 1);
+            await book.save();
+        }
         res.redirect(`/books/${book.id}`);
     } catch {
+        // if (user == null){
+        //     //
+        // }
         res.redirect('/');
     }
 });
+// return book
+router.put('/return/:id', async (req, res) => {
+    try{
+        let book = await Book.findById(req.params.id);
+        let user = await User.findById(req.user._id);
+        // console.log(book.takenByUser.toString());
+        // console.log(user._id.toString());
+        if (book.takenByUser.toString() === user._id.toString()) {
+            book.isTaken = true;
+            book.takenByUser = null;
+            book.DateReturn = null;
+            await book.save();
+        }
+        // else{
+        //     // TODO: render with error
+        // }
+        res.redirect(`/books/${book.id}`);
+    } catch (e) {
+        console.error(e);
+        res.redirect('/')
+    }
+})
 
 // Delete Book
 router.delete('/:id', async (req, res)  => {
     let book;
     try {
         book = await Book.findById(req.params.id);
+        //let result = confirm('Are you sure?');
+        // if (result){
+        //     await book.remove();
+        // }
         await book.remove();
         res.redirect('/books');
     } catch  {
