@@ -1,5 +1,4 @@
 const express = require('express');
-
 const router = express.Router();
 const Book = require('../models/book');
 const Author = require('../models/author');
@@ -38,6 +37,7 @@ router.get('/', async (req, res) => {
     }
 });
 
+
 // New Book Route
 router.get('/new', async (req, res) => {
     const newBook = new Book();
@@ -53,12 +53,15 @@ router.post('/', async (req, res) => {
         pageCount: req.body.pageCount,
         author: req.body.author
     });
-    saveCover(book, req.body.cover);
-
+    //saveCover(book, req.body.cover);
     try {
+        if (req.body.cover != null && req.body.cover !== ''){
+            saveCover(book, req.body.cover);
+        }
         const newBook = await book.save();
         res.redirect(`books/${newBook.id}`);
-    } catch {
+    } catch (e) {
+        console.error(e);
         await renderNewPage(res, book, true);
     }
 });

@@ -55,12 +55,13 @@
     margin-top: .5rem;
 }
 
+.book-details-take-button {
+    grid-area: take;
+    justify-self: stretch;
+}
+
 .book-details-author-button {
     grid-area: author;
     justify-self: stretch;
 }
 
-.book-details-take-button {
-    grid-area: take;
-    justify-self: stretch;
-}
